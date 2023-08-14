@@ -1,4 +1,5 @@
-using Microsoft.EntityFrameworkCore;
+global using System.Linq;
+global using Microsoft.EntityFrameworkCore;
 using MessageBoard.Models;
 
 var builder = WebApplication.CreateBuilder(args);
