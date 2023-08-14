@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "Animals";
+    /* _ViewStart.cshtml: specifies what all views start with (_Layout) */
+}
+
+<h1>All Cretaceous Animals:</h1>
+<ol>
+    @foreach (Animal animal in Model)
+    {
+        <li><strong>@animal.Name</strong> the @animal.Species | <a href="/Animals/Details/@(animal.AnimalId)">View Details</a></li>
+    }
+</ol>
