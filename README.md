@@ -77,8 +77,6 @@ PUT http://localhost:5042/api/animals/1
 
 ## Complete Setup
 
-
-
 This app requires use of a database. It is suggested to use migrations for ensuring the smooth setup of Identity.
 
 ### Database Schemas
@@ -131,6 +129,12 @@ If the app does not launch in the browser:
 - Run the app
 - Open a browser
 - Enter the url: https://localhost:5001/
+
+**CretaceousParkApi and CretaceousClient**
+
+To run these two apps, you'll first need to launch the api in a terminal. It will render at http://localhost:5042/.
+
+Then open another terminal and run the client, which will render at http://localhost:5002/.
 
 ## Known Bugs
 
