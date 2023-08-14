@@ -8,4 +8,6 @@ public class Article
     public string Url { get; set; }
     public string Byline { get; set; }
     public string Item_Type { get; set; }
+
+    public List<Multimedia> Multimedia { get; set; }
 }
