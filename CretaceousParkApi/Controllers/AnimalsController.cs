@@ -69,4 +69,21 @@ public class AnimalsController : ControllerBase
 
         return NoContent();
     }
+
+    /* PATCH (partial updates)
+    https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PATCH
+    https://learn.microsoft.com/en-us/aspnet/core/web-api/jsonpatch?view=aspnetcore-6.0
+    */
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAnimal(int id)
+    {
+        Animal animal = await _db.Animals.FindAsync(id);
+        if (animal == null)
+            return NotFound();
+
+        _db.Animals.Remove(animal);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
 }
