@@ -34,4 +34,18 @@ public class AnimalsController : ControllerBase
         else
             return animal;
     }
+
+    /* Model binding
+    https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-6.0#binding-source-parameter-inference
+    [FromBody] Animal animal
+    */
+
+    [HttpPost]
+    public async Task<ActionResult<Animal>> Post(Animal animal)
+    {
+        _db.Animals.Add(animal);
+        await _db.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetAnimal), new { id = animal.AnimalId }, animal);
+        /* controller action, route values, resource created */
+    }
 }
