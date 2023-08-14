@@ -9,6 +9,8 @@ By: Stella Marie
   - EntityFrameworkCore
   - Identity
   - MySQL
+  - RestSharp
+  - Newtonsoft.Json
 
 ## Description
 
@@ -16,7 +18,66 @@ By: Stella Marie
 
 **ConsoleApiCall**
 
+Sample app demonstrating how to make an api call from the console using RestSharp to make the call and Newtonson.Json to deserialize the response.
+
+**MvcApiCall**
+
+Sample app demonstrating how to incorporate an api call with RestSharp and Newtonsoft.Json. Instead of an EnvironmentVariables.cs, appsettings.json holds the API key and is passed implicitly from the Mvc builder object when constructing a controller. As in the usual format, after the data is called, in this case by a static method of the Article class, it is held by a model and passed into the view, where its properties can be displayed.
+
+### CretaceousParkApi
+
+Sample app demonstrating how to setup an api with controllers and models.
+
+#### Api Documentation
+
+GET     http://localhost:5042/api/animals/
+GET     http://localhost:5042/api/animals/{id}
+POST    http://localhost:5042/api/animals/
+PUT     http://localhost:5042/api/animals/{id}
+DELETE  http://localhost:5042/api/animals/{id}
+
+| **Parameter**     | **Type**  | **Required**  | **Description**               |
+| ----------------- | --------- | ------------- | ----------------------------- |
+| species           | string    | not required  | Returns animals with matching species value |
+| name              | string    | not required  | Returns animals with matching name value |
+| minimumAge        | number    | not required  | Returns animals with age greater than or equal to specified value |
+
+**Example**: Return all animals with a species of "Dinosaur"
+GET http://localhost:5042/api/animals?species=dinosaur
+
+**Example**: Return all animals with the name "Matilda"
+GET http://localhost:5042/api/animals?name=Matilda
+
+**Example**: Return all animals with an age of 10 or older
+GET http://localhost:5042/api/animals?minimumAge=10
+
+**Example**: Chain queries
+GET http://localhost:5042/api/animals?species=dinosaur&minimumAge=10
+
+**How to Format a POST Request**
+```json
+{
+    "species": "Tyrannosaurus Rex",
+    "name": "Elizabeth",
+    "age": 8
+}
+```
+
+**How to Format a PUT Request**
+```json
+{
+    "animalId": 1,
+    "species": "Tyrannosaurus Rex",
+    "name": "Lizzy",
+    "age": 9
+}
+```
+**Example**: PUT request
+PUT http://localhost:5042/api/animals/1
+
 ## Complete Setup
+
+
 
 This app requires use of a database. It is suggested to use migrations for ensuring the smooth setup of Identity.
 
@@ -27,7 +88,7 @@ To setup the database, follow the directions in [Connecting the Database](#conne
 ### Connecting the Database
 
 In your IDE:
-- Create a file in the Bakery assembly: appsettings.json
+- Create a file in the root of the assembly: appsettings.json
   - Do not remove the mention of this file from .gitignore
 - Add this code:
 

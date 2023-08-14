@@ -85,6 +85,11 @@ public class AnimalsController : ControllerBase
     https://learn.microsoft.com/en-us/aspnet/core/web-api/jsonpatch?view=aspnetcore-6.0
     */
 
+    /* Publicly available Swagger documentation
+    Use [ApiExplorerSettings(IgnoreApi = true)] to hide from documentation
+    Can apply to controller or action
+    */
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAnimal(int id)
     {
