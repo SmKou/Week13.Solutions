@@ -3,6 +3,8 @@ using CretaceousParkApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Specify another port or url: builder.WebHost.UseUrls("http://*:8080")
+// Alternative: specify in launchSettings.json
 // Add services to the container.
 
 builder.Services.AddControllers();
