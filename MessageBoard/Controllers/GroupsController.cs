@@ -21,7 +21,8 @@ public class GroupsController : ControllerBase
             .GroupJoin(_db.Messages,
                 group => group.GroupId,
                 message => message.GroupId,
-                (group, messages) => new Group {
+                (group, messages) => new Group 
+                {
                     GroupId = group.GroupId,
                     Name = group.Name,
                     Messages = messages.ToList()
