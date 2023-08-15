@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MessageBoard.Models;
+using MessageBoard.ViewModels;
 
 namespace MessageBoard.Controllers;
 
@@ -14,47 +15,55 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> Get(string name)
+    public async Task<ActionResult<IEnumerable<UserMessages>>> Get(string name)
     {
-        IQueryable<User> query = _db.Users
+        IQueryable<UserMessages> query = _db.Users
             .AsQueryable()
             .GroupJoin(_db.Messages,
                 user => user.UserId,
                 message => message.UserId,
-                (user, messages) => new User
+                (user, messages) => new UserMessages
                 {
                     UserId = user.UserId,
                     Name = user.Name,
                     Messages = messages.ToList()
-                }
-            );
-        if (name != null)
-            query = query.Where(entry => entry.Name.Contains(name));
+                });
         return await query.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<UserMessages>> GetUser(int id)
     {
-        User user = await _db.Users
-            .Include(user => user.Messages)
-            .SingleOrDefaultAsync(user => user.UserId == id);
-        if (user == null)
+        UserMessages model = new UserMessages();
+        if (!_db.Users.Any(user => user.UserId == id))
             return NotFound();
-        else
-            return Ok(user);
+        model = await _db.Users
+            .GroupJoin(_db.Messages,
+                user => user.UserId,
+                message => message.UserId,
+                (user, messages) => new UserMessages {
+                    UserId = user.UserId,
+                    Name = user.Name,
+                    Messages = messages.ToList()
+                })
+            .SingleOrDefaultAsync(user => user.UserId == id);
+        return Ok(model);
     }
 
     [HttpPost]
-    public async Task<ActionResult<User>> Post(User user)
+    public async Task<ActionResult<User>> Post([FromBody] User user)
     {
+        user.NormalizedUserName = user.UserName.ToLower();
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+        return CreatedAtAction(
+            nameof(GetUser), 
+            new { id = user.UserId }, 
+            user);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, User user)
+    public async Task<IActionResult> Put(int id,[FromBody] User user)
     {
         if (id != user.UserId)
             return BadRequest();
