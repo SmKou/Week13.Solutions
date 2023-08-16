@@ -18,14 +18,13 @@ public class MessagesController : ControllerBase
     public async Task<ActionResult<IEnumerable<Message>>> Get(DateTime fromDate, DateTime toDate)
     {
         DateTime nullDate = new DateTime(1, 1, 1, 0, 0, 0);
-        IQueryable<Message> query = _db.Messages.AsQueryable();
-        if (DateTime.Compare(fromDate, nullDate) != 0)
-            query.Where(message => DateTime.Compare(message.SentAt, fromDate) >= 0);
-        if (DateTime.Compare(toDate, nullDate) != 0)
-            query.Where(message => DateTime.Compare(message.SentAt, toDate) <= 0);
+        if (DateTime.Compare(toDate, nullDate) == 0)
+            toDate = DateTime.Now;
+        IQueryable<Message> query = _db.Messages
+            .AsQueryable()
+            .Where(message => message.SentAt >= fromDate && message.SentAt <= toDate);
         return await query.ToListAsync();
     }
-    
 
     [HttpGet("{id}")]
     public async Task<ActionResult<IEnumerable<Message>>> GetMessage(int id)
@@ -44,7 +43,6 @@ public class MessagesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Message>> Post([FromBody] Message message)
     {
-        return message;
         message.SentAt = DateTime.Now;
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -57,7 +55,7 @@ public class MessagesController : ControllerBase
     // Cannot update or delete a message unless by given user
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Message message)
+    public async Task<IActionResult> Put(int id,[FromBody] Message message)
     {
         if (id != message.MessageId)
             return BadRequest();
