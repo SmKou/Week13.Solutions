@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MessageBoardApi.Models;
+using MessageBoardApi.ViewModels;
 
 namespace MessageBoardApi.Controllers;
 
@@ -14,24 +15,38 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<User>>> Get(string name, string username)
+    public async Task<ActionResult<IEnumerable<UserViewModel>>> Get(string name, string username)
     {
         IQueryable<User> query = _db.Users.AsQueryable();
         if (!string.IsNullOrEmpty(name))
             query = query.Where(user => user.Name.Contains(name));
         if (!string.IsNullOrEmpty(username))
             query = query.Where(user => user.UserName.Contains(username));
-        return await query.ToListAsync();
+        IQueryable<UserViewModel> convert = query
+            .Select(user => new UserViewModel 
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                UserName = user.UserName
+            });
+        return await convert.ToListAsync();
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public ActionResult<UserViewModel> GetUser(int id)
     {
-        User model = await _db.Users.FindAsync(id);
-        if (model == null)
+        User user = _db.Users
+            .AsQueryable()
+            .SingleOrDefault(user => user.UserId == id);
+        if (user == null)
             return NotFound();
-        else
-            return Ok(model);
+        UserViewModel model = new UserViewModel
+        {
+            UserId = user.UserId,
+            Name = user.Name,
+            UserName = user.UserName
+        };
+        return Ok(model);
     }
 
     [HttpPost]
