@@ -1,4 +1,12 @@
-public class ConfigureSwaggerOptions : IConfiguredNamedOptions<SwaggerGenOptions>
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Swashbuckle.AspNetCore.SwaggerGen;
+
+namespace MessageExpBoardApi;
+
+public class ConfigureSwaggerOptions : IConfigureNamedOptions<SwaggerGenOptions>
 {
     private readonly IApiVersionDescriptionProvider _provider;
 

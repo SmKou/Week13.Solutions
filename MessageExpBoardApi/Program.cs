@@ -1,7 +1,10 @@
 global using System.Linq;
 global using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using MessageExpBoardApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +18,9 @@ builder.Services.AddDbContext<MessageContext>(
 );
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddApiVersioning(opt =>
 {
-    opt.DefaultApiVersion = new AppVersion(1, 0);
+    opt.DefaultApiVersion = new ApiVersion(1, 0);
     opt.AssumeDefaultVersionWhenUnspecified = true;
     opt.ReportApiVersions = true;
     opt.ApiVersionReader = ApiVersionReader.Combine(
@@ -31,8 +32,10 @@ builder.Services.AddApiVersioning(opt =>
 builder.Services.AddVersionedApiExplorer(setup =>
 {
     setup.GroupNameFormat = "'v'VVV";
-    setup.SubstituteApiVersionInUrl - true;
+    setup.SubstituteApiVersionInUrl = true;
 });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
 var app = builder.Build();
