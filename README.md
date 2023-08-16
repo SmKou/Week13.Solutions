@@ -30,11 +30,11 @@ Sample app demonstrating how to setup an api with controllers and models.
 
 #### Api Documentation
 
-GET     http://localhost:5042/api/animals/
-GET     http://localhost:5042/api/animals/{id}
-POST    http://localhost:5042/api/animals/
-PUT     http://localhost:5042/api/animals/{id}
-DELETE  http://localhost:5042/api/animals/{id}
+GET     http://localhost:5042/api/animals/      Return all animals
+GET     http://localhost:5042/api/animals/{id}  Return animal details
+POST    http://localhost:5042/api/animals/      Create animal
+PUT     http://localhost:5042/api/animals/{id}  Update animal by id
+DELETE  http://localhost:5042/api/animals/{id}  Delete animal by id
 
 | **Parameter**     | **Type**  | **Required**  | **Description**               |
 | ----------------- | --------- | ------------- | ----------------------------- |
@@ -74,6 +74,54 @@ GET http://localhost:5042/api/animals?species=dinosaur&minimumAge=10
 ```
 **Example**: PUT request
 PUT http://localhost:5042/api/animals/1
+
+### MessageBoardApi
+
+MessageBoardApi is an api for managing messages and groups. A user can GET all messages from a specified group, POST messages to a specified group, GET a list of all groups, input date parameters to retrieve only messages in a given timeframe, and PUT and DELETE messages as long as they were the ones to write it.
+
+Messages
+- int MessageId
+- int GroupId < Groups
+- int UserId < Users
+- string Message
+- DateTime SentAt
+
+Groups
+- int GroupId
+- string Name
+
+Users
+- int UserId
+- string Name
+- string UserName
+
+[X] GET     .../api/groups/                 Return all groups
+[X] GET     .../api/groups/{id}             Return group details
+[X] POST    .../api/groups/                 Create group
+[X] PUT     .../api/groups/{id}             Update group by id
+[X] DELETE  .../api/groups/{id}             Delete group by id
+
+[X] GET     .../api/messages/               Return all messages
+[X] GET     .../api/messages/{id}           Return message
+[X] GET     .../api/messages/group/{id}     Return messages of group
+[X] GET     .../api/messages/user/{id}      Return messages of user
+[X] POST    .../api/messages/               Create message
+[X] PUT     .../api/messages/{id}           Update message by id
+[X] DELETE  .../api/messages/{id}           Delete message by id
+
+[X] GET     .../api/users/                  Return all users
+[X] GET     .../api/users/{id}              Return user details
+[X] POST    .../api/users/                  Create user
+[X] PUT     .../api/users/{id}              Update user by id
+[X] DELETE  .../api/users/{id}              Delete user by id
+
+**Queries for:** .../api/messages?
+
+Parameter: (date: yyyy-mm-dd) fromDate
+Not Required - Returns messages sent after the specified date
+
+Parameter: (date: yyyy-mm-dd) toDate
+Not Required - Returns messages sent before the specified date
 
 ## Complete Setup
 
