@@ -16,11 +16,21 @@ public class GroupController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all messages of a specific Group.
+    /// 
     /// </summary>
     /// <param name="id"></param>
-    /// <returns>GroupMessages</returns>
+    /// <returns></returns>
+    /// <remarks>
+    ///
+    /// 
+    /// 
+    /// </remarks>
+    /// <response code="200">Returns the fetched Group</response>
+    /// <response code="404">If group not found</response>
+    
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200Ok)]
     public async Task<ActionResult<IEnumerable<GroupMessages>>> Get(int id)
     {
         if (!_db.Groups.Any(group => group.GroupId == id))
