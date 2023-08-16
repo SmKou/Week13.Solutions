@@ -25,49 +25,7 @@ public class MessagesController : ControllerBase
             query.Where(message => DateTime.Compare(message.SentAt, toDate) <= 0);
         return await query.ToListAsync();
     }
-
-    [HttpGet("/group/{id}")]
-    public async Task<ActionResult<IEnumerable<GroupMessages>>> GetGroupMessages(int groupId)
-    {
-        if (!_db.Groups.Any(group => group.GroupId == groupId))
-            return NotFound();
-
-        GroupMessages model = await _db.Groups
-            .AsQueryable()
-            .GroupJoin(_db.Messages,
-                group => group.GroupId,
-                message => message.GroupId,
-                (group, messages) => new GroupMessages
-                {
-                    GroupId = group.GroupId,
-                    Name = group.Name,
-                    Messages = messages.ToList()
-                })
-            .SingleOrDefaultAsync(group => group.GroupId == groupId);
-        return Ok(model);
-    }
-
-    [HttpGet("/user/{id}")]
-    public async Task<ActionResult<IEnumerable<UserMessages>>> GetUserMessages(int userId)
-    {
-        if (!_db.Users.Any(user => user.UserId == userId))
-            return NotFound();
-
-        UserMessages model = await _db.Users
-            .AsQueryable()
-            .GroupJoin(_db.Messages,
-                user => user.UserId,
-                message => message.UserId,
-                (user, messages) => new UserMessages
-                {
-                    UserId = user.UserId,
-                    Name = user.Name,
-                    UserName = user.UserName,
-                    Messages = messages.ToList()
-                })
-            .SingleOrDefaultAsync(user => user.UserId == userId);
-        return Ok(model);
-    }
+    
 
     [HttpGet("{id}")]
     public async Task<ActionResult<IEnumerable<Message>>> GetMessage(int id)
