@@ -50,15 +50,21 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<User>> Post([FromBody] User user)
+    public async Task<ActionResult<UserViewModel>> Post([FromBody] User user)
     {
         user.NormalizedUserName = user.UserName.ToLower();
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
+        UserViewModel model = new UserViewModel
+        {
+            UserId = user.UserId,
+            Name = user.Name,
+            UserName = user.UserName
+        };
         return CreatedAtAction(
             nameof(GetUser), 
             new { id = user.UserId }, 
-            user);
+            model);
     }
 
     [HttpPut("{id}")]

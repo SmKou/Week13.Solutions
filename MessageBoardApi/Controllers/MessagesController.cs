@@ -42,8 +42,10 @@ public class MessagesController : ControllerBase
     // POST message to a specific group
 
     [HttpPost]
-    public async Task<ActionResult<Message>> Post(Message message)
+    public async Task<ActionResult<Message>> Post([FromBody] Message message)
     {
+        return message;
+        message.SentAt = DateTime.Now;
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         _db.Messages.Add(message);
