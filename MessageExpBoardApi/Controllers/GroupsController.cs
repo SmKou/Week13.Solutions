@@ -14,6 +14,11 @@ public class GroupsController : ControllerBase
         _db = db;
     }
 
+    /// <summary>
+    /// Gets all Groups details. Messages not included.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns>List of Groups</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Group>>> Get(string name)
     {
@@ -23,6 +28,15 @@ public class GroupsController : ControllerBase
         return await query.ToListAsync();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// 
+    /// 
+    /// </remarks>
     [HttpGet("{id}")]
     public async Task<ActionResult<Group>> GetGroup(int id)
     {
@@ -33,6 +47,20 @@ public class GroupsController : ControllerBase
             return Ok(model);
     }
 
+    /// <summary>
+    /// Creates a Group.
+    /// </summary>
+    /// <param name="group"></param>
+    /// <returns>A newly created Group</returns>
+    /// <remarks>
+    /// Sample request:
+    ///
+    ///     POST /groups
+    ///     {
+    ///         "name": "Dykes on Bikes"
+    ///     }
+    ///
+    /// </remarks>
     [HttpPost]
     public async Task<ActionResult<Group>> Post([FromBody] Group group)
     {

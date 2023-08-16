@@ -15,6 +15,11 @@ public class GroupController : ControllerBase
         _db = db;
     }
 
+    /// <summary>
+    /// Gets all messages of a specific Group.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>GroupMessages</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<IEnumerable<GroupMessages>>> Get(int id)
     {
