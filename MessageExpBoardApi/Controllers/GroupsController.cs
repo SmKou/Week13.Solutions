@@ -20,11 +20,21 @@ public class GroupsController : ControllerBase
     /// <param name="name"></param>
     /// <returns>List of Groups</returns>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Group>>> Get(string name)
+    public async Task<ActionResult<IEnumerable<Group>>> Get(string searchName, string sortOrder)
     {
         IQueryable<Group> query = _db.Groups.AsQueryable();
-        if (!string.IsNullOrEmpty(name))
-            query = query.Where(entry => entry.Name.Contains(name));
+        if (!string.IsNullOrEmpty(searchName))
+            query = query.Where(entry => entry.Name.Contains(searchName));
+        if (!string.IsNullOrEmpty(sortOrder))
+            switch (sortOrder)
+            {
+                case "desc":
+                    query = query.OrderByDescending(entry => entry.Name);
+                    break;
+                default:
+                    query = query.OrderBy(entry => entry.Name);
+                    break;
+            }
         return await query.ToListAsync();
     }
 

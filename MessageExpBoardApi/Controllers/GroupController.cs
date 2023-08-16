@@ -16,7 +16,7 @@ public class GroupController : ControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Returns messages from a specific group
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
@@ -45,7 +45,7 @@ public class GroupController : ControllerBase
                 {
                     GroupId = group.GroupId,
                     Name = group.Name,
-                    Messages = messages.ToList()
+                    Messages = messages.OrderBy(m => m.SentAt).ToList()
                 })
             .SingleOrDefaultAsync(group => group.GroupId == id);
         return Ok(model);
